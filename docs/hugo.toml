@@ -2,6 +2,3 @@ baseURL = 'https://example.org/'
 languageCode = 'es-mx'
 title = 'Portafolio'
 theme = 'ananke'
-[caches]
-  [caches.images]
-    dir = ':cacheDir/images'
