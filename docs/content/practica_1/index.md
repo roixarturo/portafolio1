@@ -2,7 +2,8 @@
 title: "Práctica 1"
 date: "2025-04-01"
 summary: "La práctica se trata de identificar los elementos esenciales de los lenguajes. Se analizan y ejemplifican: nombres, alcance (global, local, anidado), marcos de activación, tipos de datos (básicos y personalizados), administración de memoria (pila, montón, estática), expresiones, comandos y control de secuencia (selección, iteración, recursión), ilustrados con un programa en C de gestión de biblioteca."
-
+weight: 2
+menu: "main"
 ---
 
   
