@@ -32,7 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.147.2
+      HUGO_VERSION: 0.147.2 # Asegúrate de que esta versión sea compatible con tu tema y contenido
       HUGO_ENVIRONMENT: production
       TZ: America/Los_Angeles
     steps:
@@ -64,8 +64,10 @@ jobs:
       - name: Configure Git
         run: git config core.quotepath false
       - name: Build with Hugo
+        # *** CAMBIO CLAVE 1: Indicar a Hugo que el código fuente está en la carpeta 'docs' ***
         run: |
           hugo \
+            --source docs/ \
             --gc \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
@@ -80,7 +82,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./docs/public
 
   # Deployment job
   deploy:
