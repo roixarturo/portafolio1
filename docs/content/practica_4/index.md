@@ -2,11 +2,11 @@
 
 ---
 
-title: "Práctica 2"
+title: "Práctica 4"
 
 date: "2025-05-31"
 
-summary: "El objetivo de esta práctica es identificar elementos esenciales de los lenguajes de programación en Python, a diferencia de la práctica anterior que se centró en C. Se analizará cómo Python maneja conceptos como nombres, marcos de activación, bloques de alcance y administración de memoria. Un aspecto clave a destacar es el tipado dinámico de Python y su gestión automática de la memoria, lo cual simplifica la programación en comparación con el control manual que ofrece C."
+summary: "Este informe presenta los conceptos básicos de Prolog, un lenguaje lógico orientado al razonamiento simbólico y se detalla el proceso de instalación de SWI-Prolog y el uso del intérprete con herramientas como trace. para depuración. Se probaron varios archivos (operadores.pl, option.pl, loop.pl, etc.) abordando estructuras como control de flujo, listas, bucles, conjunciones y disyunciones."
 
 ---
 
@@ -30,11 +30,11 @@ summary: "El objetivo de esta práctica es identificar elementos esenciales de l
 
   
 
-### Práctica 2
+### Práctica 4
 
   
 
-#### *Elementos básicos de los lenguajes de programación*
+#### *Desarrollo e introducción a Prolog*
 
   
 
@@ -90,175 +90,79 @@ La programación en Prolog  se basa en cuatro pilares:
 
 ### Instalación del entorno de desarrollo 
 
-Para instalar prolog, lo haremos desde la página de 
+Para instalar prolog, lo haremos desde la página de [SWI prolog](https://www.swi-prolog.org/download/devel/bin/swipl-9.3.24-1.x64.exe.envelope), durante la instalación, marcaremos la opción para designar el PATH en el usuario actual.
+
 ![Primer paso](1.png)
 
-### Marcos de Activación
+Verificamos esto con el comando `swipl` en bash.
 
-Cuando se llama a una función o método, se crea un **marco de activación** (o _stack frame_) en la pila de llamadas del programa. Este marco almacena información sobre la ejecución de la función, incluyendo:
+![Segundo paso](2.png)
 
--   **Variables locales**: Por ejemplo, en `main()`, `library`, `book_id`, `title`, `author`, etc., son locales a esa llamada de función.
--   **Parámetros**: En `add_book(self, book)`, `self` y `book` son parámetros pasados al método.
--   **Dirección de retorno**: La ubicación en el código a la que se debe regresar después de que la función termine.
+### Consulta
 
-Cada vez que se llama a un método como `library.add_book(book)` o `book.to_dict()`, un nuevo marco de activación se ingresa en la pila.
+Lo primero es dar el comando de `trace.`, ya qué nos ayudara a seguir todas las llamadas del programa.
 
-### Bloques de Alcance
+![Tercer paso](3.png)
 
+Consultaremos primero, el archivo de los **operadores de datos** (operadores.pl).
 
-El **alcance** se refiere a la región del código donde un nombre es reconocido y puede ser accedido. Python utiliza **alcance léxico**, lo que significa que el alcance se determina por la ubicación física del código.
+![Sexto paso](6.png) 
 
--   **Alcance de clase**: Las variables y métodos definidos dentro de una clase (por ejemplo, `self.id` en `Book`) son accesibles dentro de las instancias de esa clase.
+- `calc`.: Este es el predicado (la función o regla) que el intérprete está a punto de ejecutar.
+- `?`: Este signo de interrogación indica que el depurador está esperando una acción tuya. Te está preguntando qué quieres hacer a continuación con la ejecución de calc.
+- `creep`: Significa "avanzar paso a paso". Le estás diciendo al depurador que continúe ejecutando el código línea por línea (o subobjetivo por subobjetivo), y que se detenga y te pregunte de nuevo en el siguiente puerto de traza. Es el modo más granular de depuración.
 
-```Python
-class Book:
-    def __init__(self, book_id, title, author, publication_year, genre, quantity):
-        self.id = book_id             # 'self.id' es un atributo de instancia
-        self.title = title            # 'self.title' es un atributo de instancia
-        self.author = author          # 'self.author' es un atributo de instancia
-        self.publication_year = publication_year
-        self.genre = genre
-        self.quantity = quantity
-```
+![Cuarto paso](4.png)
+![Quinto paso](5.png)
 
--   **Alcance de método**: Las variables definidas dentro de un método (por ejemplo, `data` en `DigitalBook.to_dict()`) son locales a ese método y no se pueden acceder fuera de él.
-```Python
-class DigitalBook(Book):
-    def to_dict(self):
-        data = super().to_dict() # 'data' es una variable local del método to_dict()
-        data["file_format"] = self.file_format
-        return data
-```
--   **Alcance global**: Aunque no se utiliza explícitamente para muchas variables en este ejemplo específico, cualquier variable definida en el nivel superior del módulo tendría alcance global.
+Ahora, seguiremos con los **controles de flujos** (option.pl)
 
--   **Alcance de función**: Las variables definidas dentro de una función (por ejemplo, `choice` en `main()`) son locales a esa función.
-```Python
-def main():
-    library = Library() # 'library' es una variable local de la función main()
-    while True:
-        choice = int(input("Indica tu opcion: ")) # 'choice' es una variable local de la función main()
-```
+![Septimo paso](7.png)
+![Octavo paso](8.png)
+![Noveno paso](9.png)
 
-### Administración de memoria
+**Bucles** (loop.pl)
 
-Python utiliza la **administración automática de memoria** a través de un proceso llamado **recolección de basura** (_garbage collection_). Los objetos se asignan en el **montón** (_heap_) cuando se crean (por ejemplo, `Book()`, `Member()`, `Library()`). El módulo `memory_management`tiene la intención de rastrear las asignaciones y desasignaciones del **heap**.
+- Contador a 10
 
-El método `__init__` en `Book`, `Member` y `Library` llama explícitamente a `memory_management.increment_heap_allocations(1)`, indicando que se está creando un objeto y se está asignando memoria. De manera similar, el método `__del__`, que es un destructor, llama a `memory_management.increment_heap_deallocations(1)` cuando un objeto está a punto de ser recolectado por el recolector de basura, lo que implica que la memoria para ese objeto está siendo liberada.
+![Decimo paso](10.png)
 
-#### Clase `MemoryManagement`
+![Onceavo paso](11.png)
 
-La clase `MemoryManagement` tiene los siguientes componentes:
+- Rangos
 
--   **`__init__(self)`**: Este es el constructor de la clase. Inicializa dos atributos:
-    
-    -   `self.heap_allocations`: Un contador que rastrea la cantidad total de "memoria" asignada en el heap. Se inicializa en 0.
-    -  `self.heap_deallocations`: Un contador que rastrea la cantidad total de "memoria" desasignada del heap. Se inicializa en 0.
-```Python
-def  __init__(self):
+![Catorce paso](14.png)
 
-	self.heap_allocations  =  0
+![Doceavo paso](12.png)
+![Treceavo paso](13.png)
 
-	self.heap_deallocations  =  0
-```
-   
--   **`increment_heap_allocations(self, size)`**: Este método se utiliza para aumentar el contador de asignaciones. Cuando se crea un nuevo objeto en el programa principal que consume memoria del heap, se llamaría a este método, pasando el `size` (tamaño) de la memoria asignada.
-```Python
-def  increment_heap_allocations(self, size):
+**Conjunciones y disyunciones** (conj_disj.pl)
 
-	'''Increment heap allocations'''
+![15 paso](15.png)
 
-	self.heap_allocations  +=  size
-```
-    
--   **`increment_heap_deallocations(self, size)`**: Este método se utiliza para aumentar el contador de desasignaciones. Cuando un objeto es destruido o su memoria es liberada, se llamaría a este método, pasando el `size` de la memoria desasignada.
-```Python
-def  increment_heap_deallocations(self, size):
+![16 paso](16.png)
+![17 paso](17.png)
 
-	'''Increment heap deallocations '''
+**Listas** (_basic.pl, _misc.pl, _repost.pl)
+- list_basic.pl
 
-	self.heap_deallocations  +=  size
-```
-    
--   **`display_memory_usage(self)`**: Este método simplemente imprime el estado actual de las asignaciones y desasignaciones del heap. Muestra los valores de `self.heap_allocations` y `self.heap_deallocations`.
-```Python
-def  display_memory_usage(self):
+![18 paso](18.png)
 
-	'''Display memory usage'''
+![19 paso](19.png)
 
-	print(f"Heap allocations: {self.heap_allocations} bytes")
+- list_misc.pl
 
-	print(f"Heap deallocations: {self.heap_deallocations} bytes")
-```
-Al final del módulo, se crea una instancia de la clase `MemoryManagement` llamada `memory_management`:
+![20 paso](20.png)
 
-Esta instancia global permite que otros módulos) accedan y actualicen los contadores de asignación y desasignación de memoria sin tener que crear una nueva instancia de `MemoryManagement` cada vez.
+![21 paso](21.png)
 
-### Expresiones
-Las **expresiones** son combinaciones de valores, variables, operadores y llamadas a funciones que se evalúan a un único valor.
-
--   **Expresiones aritméticas**: `book.quantity -= 1`
--   **Expresiones booleanas**: `book and member and book.quantity > 0`, `is_digital == 's'`
--   **Expresiones de cadena**: `f"ID libro: {book.id}"` (_f-string_)
--   **Construir lista a partir de expresión en secuencia**: `[book.to_dict() for book in self.books]`
-
-### Comandos
-
-Los **comandos** (o sentencias) son instrucciones que realizan una acción. No necesariamente devuelven un valor.
-
--   **Asignación**: `self.id = book_id`
--   **Llamadas a métodos**: `library.add_book(book)`
--   **Sentencias de impresión**: `print("\nEl libro fue agregado exitosamente!\n")`
--   **Sentencias de control de flujo**: `if`, `elif`, `else`, `while`, `for`
-
-### Control de Flujo
-
-#### Selección
-
-Las sentencias `if`/`elif`/`else` controlan el flujo de ejecución basándose en condiciones.
-
--   En `main()`, el bloque `if choice == 1:` determina qué acción realizar según la entrada del usuario.
--   En `issue_book()`, `if book and member and book.quantity > 0:` verifica si se puede prestar un libro.
--   En `load_library_from_file()`, `try-except` maneja posibles `FileNotFoundError`.
-
-#### Iteración
-
-Los bucles se utilizan para ejecutar repetidamente un bloque de código.
-
--   **Bucle `while True:` en `main()`**: Muestra continuamente el menú hasta que el usuario elige salir.
--   **Bucles `for`**: Se utilizan para iterar sobre listas de libros o miembros (por ejemplo, `for book in self.books:` en `display_books()`).
-
-
-
-### Subprogramas
-
-Los **subprogramas** se refieren a funciones y métodos, que son bloques de código diseñados para realizar una tarea específica y pueden ser reutilizados.
-
--   **Métodos**: Funciones definidas dentro de clases, que operan sobre los datos del objeto (por ejemplo, `add_book`, `to_dict`).
--   **Métodos estáticos**: Métodos que pertenecen a la clase pero no operan sobre datos de instancia (por ejemplo, `Book.from_dict`). Se definen con `@staticmethod`.
--   **Métodos de clase**: Métodos que operan sobre la clase misma, (por ejemplo, `Genre.all_genres`). Se definen con `@classmethod`.
--   **Funciones**: Bloques de código independientes (por ejemplo, `main()`).
-
-### Tipos de Datos
-
-Python es un lenguaje de tipado dinámico, lo que significa que no se declaran explícitamente los tipos de datos.
-
--   **`int` (Enteros)**: Para números sin decimales como IDs (`book_id`, `member_id`), años (`publication_year`), cantidades (`quantity`) y opciones de menú (`choice`).
--   **`str` (Cadenas de Texto)**: Para texto como títulos (`title`), autores (`author`), géneros (`genre`), nombres (`name`), formatos de archivo (`file_format`) y nombres de archivos (`filename`).
--   **`list` (Listas)**: Para colecciones ordenadas de elementos, como la lista de todos los libros (`self.books`), todos los miembros (`self.members`) o los IDs de los libros prestados por un miembro (`self.issued_books`).
--   **`dict` (Diccionarios)**: Para colecciones de pares clave-valor. Se usan para representar objetos (`Book`, `Member`, etc.) como estructuras de datos que se pueden guardar en JSON y cargar desde él.
--   **`bool` (Booleanos)**: Para valores de verdad (`True` o `False`), como la variable `is_digital` que indica si un libro es digital o el resultado de condiciones lógicas (`if book and member`).
+![22 paso](22.png)
 
 
 ---
 **Referencias**
 
-Cooper, K. D., & Torczon, L. (2012). **The procedure abstraction**. En _Elsevier eBooks_ (pp. 269-330). https://doi.org/10.1016/b978-0-12-088478-0.00006-2
-
- **Alcance**. (s. f.). JSvis. https://centrogeo.github.io/JSvis/13-Alcance.html
-
-TylerMSFT. (s. f.). **Nombres representativos**. Microsoft Learn. https://learn.microsoft.com/es-es/cpp/build/reference/decorated-names?view=msvc-170  
-
-IBM Debug for z/OS. (s. f.). **Expresiones en C**. IBM. https://www.ibm.com/docs/es/debug-for-zos/15.0.x?topic=programs-c-c-expressions
+United States Artificial Intelligence Institute (USAII®). (s. f.). What is Prolog Programming Language: An Overview. https://www.usaii.org/ai-insights/what-is-prolog-programming-language-an-overview. 
 
 ---
 
@@ -272,4 +176,4 @@ https://github.com/roixarturo/portafolio1
 
 https://roixarturo.github.io/portafolio1/
 
-> Written with [StackEdit](https://stackedit.io/).
+
