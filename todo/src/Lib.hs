@@ -23,7 +23,6 @@ prompt todos = do
       editTodo command todos newTodo
     else interpret command todos
 
--- https://stackoverflow.com/questions/1817865/haskell-and-differences#:~:text=The%20%3A%20operator%20is%20known%20as,same%20as%20y%3Ax%3A%5B%5D%20.
 interpret :: String -> [String] -> IO ()
 interpret ('+' : ' ' : todo) todos = prompt (todo : todos) -- append todo to the empty or previous todo list [] here.
 interpret ('-' : ' ' : num) todos =
@@ -78,7 +77,7 @@ showOne :: Int -> [a] -> Maybe a
 showOne n todos =
   if (n < 0) || (n > length todos)
     then Nothing
-    else Just (todos !! n) -- Index is not checked here? Why?
+    else Just (todos !! n)
 
 editIndex :: Int -> a -> [a] -> [a]
 editIndex i x xs = take i xs ++ [x] ++ drop (i + 1) xs
@@ -111,7 +110,7 @@ editOne n todos newTodo =
   if (n < 0) || (n > length todos)
     then Nothing
     else do
-      Just (todos !! n) -- Index is not checked here? Why?
+      Just (todos !! n)
 
 reverseTodos :: [a] -> [a]
 reverseTodos xs = go xs []

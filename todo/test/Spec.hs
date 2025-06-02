@@ -11,6 +11,6 @@ main = do
     let new_todos = ["Write", "two", "blog", "post"]
 
     let result = editIndex index new_todo todos == new_todos
-    
+
     -- assert :: Bool -> a -> a
     putStrLn $ assert result "editIndex worked." 
