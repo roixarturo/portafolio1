@@ -18,7 +18,6 @@ class Genre:
     def all_genres(cls):
         return [cls.FICTION, cls.NON_FICTION, cls.SCIENCE, cls.HISTORY, cls.FANTASY, cls.BIOGRAPHY, cls.OTHER]
 
-
 class Book:
     '''Clase para definir los libros de la biblioteca'''
     def __init__(self, book_id, title, author, publication_year, genre, quantity):
